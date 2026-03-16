@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="STAD.API/STAD.API.csproj" />
+  <Project Path="STAD.Application/STAD.Application.csproj" />
+  <Project Path="STAD.Domain/STAD.Domain.csproj" />
+  <Project Path="STAD.Infrastructure/STAD.Infrastructure.csproj" />
+</Solution>

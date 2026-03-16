@@ -1,0 +1,6 @@
+@STAD.API_HostAddress = http://localhost:5188
+
+GET {{STAD.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

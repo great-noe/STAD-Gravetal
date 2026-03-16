@@ -110,14 +110,16 @@ Es la capa de presentación que:
 
 Para ejecutar este proyecto de forma local se requiere:
 
-- **.NET SDK 10.0**
+- **.NET SDK 9**
 - **Node.js (LTS)**
 - **Angular CLI**
 - **Docker Desktop** (para orquestar PostgreSQL y Keycloak)
 
 ---
 
-# 📂 Estructura de la Solución
+## 📂 Estructura de la Solución
+
+```
 /
 ├── STAD.API/            # Web API Controllers & Configuration
 ├── STAD.Application/    # Use Cases & Business Logic
@@ -125,6 +127,7 @@ Para ejecutar este proyecto de forma local se requiere:
 ├── STAD.Infrastructure/ # Data Access & External Services
 ├── compose.yaml         # Docker orchestration
 └── README.md            # Project documentation
+```
 
 ---
 

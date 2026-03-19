@@ -13,22 +13,24 @@ public class ApplicationDbContext : DbContext
 
     // Cada DbSet representa una tabla en tu base de datos PostgreSQL
     public DbSet<Lote> Lotes => Set<Lote>();
+    public DbSet<Productor> Productores => Set<Productor>();
+    public DbSet<Silo> Silos => Set<Silo>();
+    public DbSet<Movimiento> Movimientos => Set<Movimiento>();
 
     // Este método nos permite configurar detalles específicos de las tablas (Fluent API)
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
-        // Configuración específica para la tabla Lotes
+        // ========================
+        // Configuración de LOTES
+        // ========================
         modelBuilder.Entity<Lote>(entity =>
         {
-            // Nombre de la tabla en Postgres
             entity.ToTable("lotes");
 
-            // Definimos la llave primaria
             entity.HasKey(e => e.Id);
 
-            // Requerimientos de los campos (Para asegurar la integridad de datos de tu rúbrica)
             entity.Property(e => e.NumeroLote)
                   .IsRequired()
                   .HasMaxLength(50);
@@ -42,7 +44,105 @@ public class ApplicationDbContext : DbContext
                   .HasMaxLength(30);
 
             entity.Property(e => e.PesoToneladas)
-                  .HasColumnType("decimal(18,2)"); // Precisión para el peso de la soya
+                  .HasColumnType("decimal(18,2)");
+
+            // FK al productor
+            entity.HasOne(e => e.Productor)
+                  .WithMany(p => p.Lotes)
+                  .HasForeignKey(e => e.ProductorId)
+                  .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        // =============================
+        // Configuración de PRODUCTORES
+        // =============================
+        modelBuilder.Entity<Productor>(entity =>
+        {
+            entity.ToTable("productores");
+
+            entity.HasKey(e => e.Id);
+
+            entity.Property(e => e.NombreRazonSocial)
+                  .IsRequired()
+                  .HasMaxLength(100);
+
+            entity.Property(e => e.NIT)
+                  .IsRequired()
+                  .HasMaxLength(20);
+
+            // NIT es único por productor (restricción de negocio)
+            entity.HasIndex(e => e.NIT)
+                  .IsUnique();
+
+            entity.Property(e => e.Ubicacion)
+                  .IsRequired()
+                  .HasMaxLength(150);
+
+            entity.Property(e => e.Estado)
+                  .IsRequired()
+                  .HasMaxLength(20);
+        });
+
+        // ========================
+        // Configuración de SILOS
+        // ========================
+        modelBuilder.Entity<Silo>(entity =>
+        {
+            entity.ToTable("silos");
+
+            entity.HasKey(e => e.Id);
+
+            entity.Property(e => e.NombreSilo)
+                  .IsRequired()
+                  .HasMaxLength(50);
+
+            entity.Property(e => e.CapacidadMaximaTon)
+                  .HasColumnType("decimal(18,2)");
+
+            entity.Property(e => e.CapacidadActualTon)
+                  .HasColumnType("decimal(18,2)");
+
+            entity.Property(e => e.Estado)
+                  .IsRequired()
+                  .HasMaxLength(20);
+        });
+
+        // ==============================
+        // Configuración de MOVIMIENTOS
+        // ==============================
+        modelBuilder.Entity<Movimiento>(entity =>
+        {
+            entity.ToTable("movimientos");
+
+            entity.HasKey(e => e.Id);
+
+            entity.Property(e => e.TipoMovimiento)
+                  .IsRequired()
+                  .HasMaxLength(50);
+
+            entity.Property(e => e.FechaHora)
+                  .IsRequired()
+                  .HasDefaultValueSql("NOW() AT TIME ZONE 'UTC'"); // Default UTC en PostgreSQL
+
+            entity.Property(e => e.PesoManejado)
+                  .HasColumnType("decimal(18,2)");
+
+            entity.Property(e => e.UsuarioRegistro)
+                  .IsRequired()
+                  .HasMaxLength(100);
+
+            // FK obligatoria al lote
+            entity.HasOne(e => e.Lote)
+                  .WithMany()
+                  .HasForeignKey(e => e.LoteId)
+                  .OnDelete(DeleteBehavior.Restrict);
+
+            // FK opcional al silo (nullable)
+            entity.HasOne(e => e.Silo)
+                  .WithMany()
+                  .HasForeignKey(e => e.SiloId)
+                  .IsRequired(false)
+                  .OnDelete(DeleteBehavior.SetNull);
         });
     }
 }

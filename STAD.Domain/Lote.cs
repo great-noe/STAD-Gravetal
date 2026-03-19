@@ -7,6 +7,10 @@ public class Lote
     // Criterio de Evaluación: UUID v7 para ordenamiento cronológico en BD
     public Guid Id { get; private set; }
 
+    // FK al productor que entrega este lote de soya
+    public Guid ProductorId { get; private set; }
+    public Productor Productor { get; private set; } = null!;
+
     // Datos del negocio (Gravetal)
     public string NumeroLote { get; private set; } = string.Empty;
     public decimal PesoToneladas { get; private set; }
@@ -22,11 +26,12 @@ public class Lote
     protected Lote() { }
 
     // Constructor controlado para crear un nuevo lote desde la API
-    public Lote(string numeroLote, decimal pesoToneladas, string destino, string usuarioRegistro)
+    public Lote(Guid productorId, string numeroLote, decimal pesoToneladas, string destino, string usuarioRegistro)
     {
         // .NET 9 incluye soporte nativo para UUID v7, ideal para bases de datos de alto volumen
         Id = Guid.CreateVersion7();
 
+        ProductorId = productorId;
         NumeroLote = numeroLote;
         PesoToneladas = pesoToneladas;
         FechaAcopio = DateTime.UtcNow;

@@ -10,25 +10,28 @@ using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. Configuración de Base de Datos (PostgreSQL 18)
+// 1. Configuracion de Base de Datos (PostgreSQL 18)
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
 // --- INICIO DE NUEVOS TRABAJADORES ---
 
-// 1. Registrar el Repositorio (Inversión de dependencias)s
+// 1. Registrar los Repositorios (Inversion de dependencias)
 builder.Services.AddScoped<ILoteRepository, LoteRepository>();
+builder.Services.AddScoped<IProductorRepository, ProductorRepository>();
+builder.Services.AddScoped<ISiloRepository, SiloRepository>();
+builder.Services.AddScoped<IMovimientoRepository, MovimientoRepository>();
 
-// 2. Registrar MediatR (Busca automáticamente tus Commands y Handlers)
+// 2. Registrar MediatR (Busca automaticamente tus Commands y Handlers)
 builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(CrearLoteCommand).Assembly));
 
-// 3. Registrar FluentValidation (Busca automáticamente tus reglas de negocio)
+// 3. Registrar FluentValidation (Busca automaticamente tus reglas de negocio)
 builder.Services.AddValidatorsFromAssembly(typeof(CrearLoteCommandValidator).Assembly);
 
 // --- FIN DE NUEVOS TRABAJADORES ---
 
-// 2. Configuración de Seguridad: Autenticación JWT con Keycloak
+// 2. Configuracion de Seguridad: Autenticacion JWT con Keycloak
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -46,7 +49,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
-// Swagger en su versión más simple y nativa para .NET 9
+// Swagger en su version mas simple y nativa para .NET 9
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();

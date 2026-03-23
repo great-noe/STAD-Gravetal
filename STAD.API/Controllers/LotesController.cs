@@ -1,8 +1,9 @@
-﻿using System.Threading.Tasks;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using STAD.Application.Lotes.Commands;
+using STAD.Application.Lotes.Queries;
+using System.Threading.Tasks;
 
 namespace STAD.API.Controllers;
 
@@ -30,5 +31,13 @@ public class LotesController : ControllerBase
             Mensaje = "Lote de soya registrado exitosamente usando CQRS",
             LoteId = loteId
         });
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> ObtenerTodosLosLotes()
+    {
+        var query = new ObtenerLotesQuery();
+        var lotes = await _mediator.Send(query);
+        return Ok(lotes);
     }
 }

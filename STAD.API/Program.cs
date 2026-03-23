@@ -47,6 +47,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
+// --- PERMITIR QUE ANGULAR SE CONECTE (CORS) ---
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("PermitirAngular", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200") // El puerto de tu frontend
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 builder.Services.AddEndpointsApiExplorer();
 
 // Swagger en su version mas simple y nativa para .NET 9
@@ -61,7 +71,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseCors("PermitirAngular");
 // 3. Middlewares de Seguridad
 app.UseAuthentication();
 app.UseAuthorization();

@@ -1,0 +1,42 @@
+<div style="text-align: center; margin-top: 50px; font-family: sans-serif;">
+  <h1>Sistema STAD - Gravetal</h1>
+  <p>Sesión iniciada correctamente a través de Keycloak.</p>
+
+  <button (click)="enviarSoyaDePrueba()"
+          style="padding: 15px 30px; font-size: 16px; background-color: #28a745; color: white; border: none; border-radius: 8px; cursor: pointer; margin-top: 20px;">
+    Registrar Soya desde Angular
+  </button>
+
+  <hr style="margin: 40px auto; width: 80%;">
+
+  <h2>Lotes Registrados en Base de Datos</h2>
+
+  <table border="1" style="margin: 0 auto; width: 80%; text-align: left; border-collapse: collapse; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+    <thead>
+      <tr style="background-color: #f2f2f2;">
+        <th style="padding: 12px;">Número de Lote</th>
+        <th style="padding: 12px;">Peso (Ton)</th>
+        <th style="padding: 12px;">Destino</th>
+        <th style="padding: 12px;">Usuario Registro</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (lote of lotes; track lote.id) {
+      <tr>
+        <td style="padding: 12px;">{{ lote.numeroLote }}</td>
+        <td style="padding: 12px;">{{ lote.pesoToneladas }}</td>
+        <td style="padding: 12px;">{{ lote.destino }}</td>
+        <td style="padding: 12px; color: gray;">{{ lote.usuarioRegistro }}</td>
+      </tr>
+      } @empty {
+      <tr>
+        <td colspan="4" style="padding: 20px; text-align: center; color: gray;">
+          Cargando lotes o no hay lotes registrados...
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+<router-outlet></router-outlet>

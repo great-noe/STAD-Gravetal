@@ -7,4 +7,5 @@ public interface ILoteRepository
 {
     Task AddAsync(Lote lote);
     Task SaveChangesAsync();
+    Task<List<Lote>> ObtenerTodosAsync();
 }

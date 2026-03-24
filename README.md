@@ -76,7 +76,7 @@ Es la capa de presentación que:
 
 ### Backend
 
-- .NET Core 9 / .NET 10  
+- .NET Core 10  
 - Entity Framework Core  
 
 ---

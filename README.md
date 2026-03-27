@@ -426,7 +426,7 @@ El proyecto Sistema de Trazabilidad Agrícola Digital (STAD) digitaliza exitosam
 ## 10. ANEXOS
 
 ### 10.1. Enlace al Repositorio (GitHub)
-- **Repositorio de STAD (Frontend & Backend)**: [Añadir Enlace a Repositorio GitHub Aquí]
+- **Repositorio de STAD (Frontend & Backend)**: https://github.com/great-noe/STAD-Gravetal
 
 ### 10.2. Capturas de Pantalla
 - *[Captura del Login Integrado a Keycloak]*

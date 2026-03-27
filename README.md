@@ -444,8 +444,8 @@ services:
       - "5432:5432"
     environment:
       POSTGRES_USER: admin
-      POSTGRES_PASSWORD: Admin123*
-      POSTGRES_DB: STAD_Db
+      POSTGRES_PASSWORD: 12345678
+      POSTGRES_DB: stad_db
   stad-keycloak:
     image: quay.io/keycloak/keycloak:26.0
     ports:

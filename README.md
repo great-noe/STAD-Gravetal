@@ -14,62 +14,80 @@
 | **Docente** | Lic. Andrés Grover Albino Chambi |
 | **Período** | Marzo de 2026 |
 | **Estudiante** | Noel David Limachi Abelo |
-| **Tecnologías** | .NET Core 9, Angular 21, Keycloak, PostgreSQL 18 |
+| **Tecnologías** | .NET Core 10, Angular 21, Keycloak, PostgreSQL 18 |
 
 ---
 
 ## 📋 ESTRUCTURA DEL DOCUMENTO DE PROYECTO
 
 ### 1. PORTADA
-┌─────────────────────────────────────────────────────────────────┐
-│                                                                 │
-│ UNIVERSIDAD PRIVADA DOMINGO SAVIO                               │
-│ SUB-SEDE LA PAZ                                                 │
-│                                                                 │
-│ FACULTAD DE INGENIERÍA                                          │
-│ CARRERA DE INGENIERÍA DE SISTEMAS                               │
-│                                                                 │
-│ PROGRAMACIÓN WEB II                                             │
-│                                                                 │
-│ ┌───────────────────────────────────────────────────────────┐   │
-│ │ Sistema de Trazabilidad Agrícola Digital (STAD): para el  │   │
-│ │ Control de Exportaciones en la Hidrovía Paraguay-Paraná   │   │
-│ │ Caso Gravetal Bolivia S.A.                                │   │
-│ └───────────────────────────────────────────────────────────┘   │
-│                                                                 │
-│ ESTUDIANTE:                                                     │
-│ • Noel David Limachi Abelo                                      │
-│                                                                 │
-│ DOCENTE: Lic. Andrés Grover Albino Chambi                       │
-│                                                                 │
-│ La Paz - Bolivia                                                │
-│ Marzo de 2026                                                   │
-│                                                                 │
-└─────────────────────────────────────────────────────────────────┘
+
+<div align="center">
+
+**UNIVERSIDAD PRIVADA DOMINGO SAVIO**  
+**SUB-SEDE LA PAZ**
+
+<br>
+
+**FACULTAD DE INGENIERÍA**  
+**CARRERA DE INGENIERÍA DE SISTEMAS**
+
+<br>
+
+**PROGRAMACIÓN WEB II**
+
+<br>
+
+---
+
+### **Sistema de Trazabilidad Agrícola Digital (STAD)**  
+**Para el Control de Exportaciones en la Hidrovía Paraguay-Paraná**  
+**Caso: Gravetal Bolivia S.A.**
+
+---
+
+</div>
+
+<br>
+
+**ESTUDIANTE:**  
+- Noel David Limachi Abelo  
+
+<br>
+
+**DOCENTE:**  
+- Lic. Andrés Grover Albino Chambi  
+
+<br>
+
+<div align="center">
+
+**La Paz - Bolivia**  
+**Marzo de 2026**
+
+</div>
 
 ### 2. ÍNDICE GENERAL
 
 ## TABLA DE CONTENIDO
 
-1. INTRODUCCIÓN .................................................. 4
-   1.1. Antecedentes ............................................. 4
-   1.2. Objetivo General ......................................... 5
-   1.3. Objetivos Específicos .................................... 5
-   1.4. Requerimientos ........................................... 6
-   1.5. Justificación ............................................ 7
+1. [Introducción](#introducción)  
+   - [Antecedentes](#antecedentes)  
+   - [Objetivo General](#objetivo-general)  
+   - [Objetivos Específicos](#objetivos-específicos)  
+   - [Requerimientos](#requerimientos)  
+   - [Justificación](#justificación)  
 
-2. DISEÑO DEL SISTEMA ............................................ 8
-   2.1. Arquitectura del Sistema ................................. 8
-   2.2. Stack Tecnológico ........................................ 9
+2. [Diseño del Sistema](#diseño-del-sistema)  
+   - [Arquitectura del Sistema](#arquitectura-del-sistema)  
+   - [Stack Tecnológico](#stack-tecnológico)  
 
-3. IMPLEMENTACIÓN ................................................ 10
-   3.1. Requisitos de Instalación ................................ 10
-   3.2. Estructura de la Solución ................................ 11
-   3.3. Seguridad y Auditoría .................................... 12
+3. [Implementación](#implementación)  
+   - [Requisitos de Instalación](#requisitos-de-instalación)  
+   - [Estructura de la Solución](#estructura-de-la-solución)  
+   - [Seguridad y Auditoría](#seguridad-y-auditoría)  
 
-4. BIBLIOGRAFÍA .................................................. 13
-
----
+4. [Bibliografía](#bibliografía)
 
 ## 1. INTRODUCCIÓN
 
@@ -109,23 +127,25 @@ Desarrollar un sistema web de trazabilidad agrícola para Gravetal Bolivia S.A. 
 
 #### 1.4.1. Requerimientos Funcionales (RF)
 
-| ID | Requerimiento | Descripción |
-|----|---------------|-------------|
-| **RF1** | Gestión de Autenticación y Autorización | El sistema debe restringir el acceso mediante Guards e Interceptors de Angular, validando tokens JWT emitidos por Keycloak. |
-| **RF2** | Registro de Trazabilidad de Lotes | Permitir la creación, edición y seguimiento de lotes de soja, asignando un UUID v7 único para su identificación cronológica. |
-| **RF3** | Control de Auditoría | Registrar de forma automática quién, cuándo y qué cambio se realizó en cada etapa del proceso de exportación. |
-| **RF4** | Generación de Reportes Técnicos | El sistema debe emitir reportes y documentación técnica sobre el estado de los lotes y su destino en la hidrovía. |
-| **RF5** | Validación de Datos | Implementar validaciones estrictas en el backend para asegurar que los datos de pesaje y calidad cumplan con los estándares de exportación. |
+| ID     | Requerimiento                              | Descripción |
+|--------|--------------------------------------------|-------------|
+| **RF1** | Gestión de Autenticación y Autorización | El sistema debe restringir el acceso mediante *Guards* e *Interceptors* de Angular, validando tokens JWT emitidos por Keycloak. |
+| **RF2** | Registro de Trazabilidad de Lotes      | Permitir la creación, edición y seguimiento de lotes de soja, asignando un UUID v7 único para su identificación cronológica. |
+| **RF3** | Control de Auditoría                   | Registrar de forma automática quién, cuándo y qué cambio se realizó en cada etapa del proceso de exportación. |
+| **RF4** | Generación de Reportes Técnicos        | El sistema debe emitir reportes y documentación técnica sobre el estado de los lotes y su destino en la hidrovía. |
+| **RF5** | Validación de Datos                   | Implementar validaciones estrictas en el backend para asegurar que los datos de pesaje y calidad cumplan con los estándares de exportación. |
+
+---
 
 #### 1.4.2. Requerimientos No Funcionales (RNF)
 
-| ID | Requerimiento | Descripción |
-|----|---------------|-------------|
-| **RNF1**| Disponibilidad y PWA | La aplicación debe funcionar como una PWA para permitir la consulta de datos básicos incluso en condiciones de conectividad limitada en los muelles. |
-| **RNF2**| Arquitectura y Mantenibilidad | El código fuente debe seguir los principios de Arquitectura Limpia para facilitar la escalabilidad y el mantenimiento a largo plazo. |
-| **RNF3**| Seguridad OWASP | El desarrollo debe mitigar vulnerabilidades comunes (XSS, SQL Injection) siguiendo las recomendaciones de seguridad. |
-| **RNF4**| Diseño Responsivo | La interfaz debe ser completamente adaptable a dispositivos móviles y tablets utilizando un diseño mobile-first. |
-| **RNF5**| Documentación de API | La lógica del backend debe estar documentada automáticamente mediante Swagger/OpenAPI para facilitar la integración. |
+| ID      | Requerimiento                          | Descripción |
+|---------|----------------------------------------|-------------|
+| **RNF1** | Disponibilidad y PWA               | La aplicación debe funcionar como una PWA para permitir la consulta de datos básicos incluso en condiciones de conectividad limitada en los muelles. |
+| **RNF2** | Arquitectura y Mantenibilidad     | El código fuente debe seguir los principios de Arquitectura Limpia para facilitar la escalabilidad y el mantenimiento a largo plazo. |
+| **RNF3** | Seguridad OWASP                   | El desarrollo debe mitigar vulnerabilidades comunes (XSS, SQL Injection) siguiendo las recomendaciones de seguridad. |
+| **RNF4** | Diseño Responsivo                 | La interfaz debe ser completamente adaptable a dispositivos móviles y tablets utilizando un diseño *mobile-first*. |
+| **RNF5** | Documentación de API              | La lógica del backend debe estar documentada automáticamente mediante Swagger/OpenAPI para facilitar la integración. |
 
 ### 1.5. JUSTIFICACIÓN
 
@@ -163,7 +183,7 @@ El backend sigue los principios de **Clean Architecture (Arquitectura Limpia)** 
 - Tailwind CSS 4.2
 
 **Backend:**
-- .NET Core 9
+- .NET Core 10
 - Entity Framework Core
 
 **Seguridad:**

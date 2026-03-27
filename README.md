@@ -21,81 +21,111 @@
 ## 📋 ESTRUCTURA DEL DOCUMENTO DE PROYECTO
 
 ### 1. PORTADA
-┌─────────────────────────────────────────────────────────────────┐
-│                                                                 │
-│ UNIVERSIDAD PRIVADA DOMINGO SAVIO                               │
-│ SUB-SEDE LA PAZ                                                 │
-│                                                                 │
-│ FACULTAD DE INGENIERÍA                                          │
-│ CARRERA DE INGENIERÍA DE SISTEMAS                               │
-│                                                                 │
-│ PROGRAMACIÓN WEB II                                             │
-│                                                                 │
-│ ┌───────────────────────────────────────────────────────────┐   │
-│ │ Sistema de Trazabilidad Agrícola Digital (STAD): para el  │   │
-│ │ Control de Exportaciones en la Hidrovía Paraguay-Paraná   │   │
-│ │ Caso Gravetal Bolivia S.A.                                │   │
-│ └───────────────────────────────────────────────────────────┘   │
-│                                                                 │
-│ ESTUDIANTE:                                                     │
-│ • Noel David Limachi Abelo                                      │
-│                                                                 │
-│ DOCENTE: Lic. Andrés Grover Albino Chambi                       │
-│                                                                 │
-│ La Paz - Bolivia                                                │
-│ Marzo de 2026                                                   │
-│                                                                 │
-└─────────────────────────────────────────────────────────────────┘
+
+<div align="center">
+
+# UNIVERSIDAD PRIVADA DOMINGO SAVIO  
+## SUB-SEDE LA PAZ  
+
+<br>
+
+## FACULTAD DE INGENIERÍA  
+### CARRERA DE INGENIERÍA DE SISTEMAS  
+
+<br>
+
+### PROGRAMACIÓN WEB II  
+
+<br>
+
+---
+
+## **Sistema de Trazabilidad Agrícola Digital (STAD)**  
+### Control de Exportaciones en la Hidrovía Paraguay-Paraná  
+### Caso: Gravetal Bolivia S.A.  
+
+---
+
+</div>
+
+<br>
+
+**ESTUDIANTE:**  
+- Noel David Limachi Abelo  
+
+<br>
+
+**DOCENTE:**  
+- Lic. Andrés Grover Albino Chambi  
+
+<br>
+
+<div align="center">
+
+**La Paz - Bolivia**  
+**Marzo de 2026**
+
+</div>
+
+---
 
 ### 2. ÍNDICE GENERAL
 
 ## TABLA DE CONTENIDO
 
-1. [Introducción](#1-introducción)
-   1.1. [Contexto General](#11-contexto-general)
-   1.2. [Problemática](#12-problemática)
-   1.3. [Antecedentes](#13-antecedentes)
-   1.4. [Justificación](#14-justificación)
-   1.5. [Alcance y Limitaciones](#15-alcance-y-limitaciones)
-2. [Objetivos](#2-objetivos)
-   2.1. [Objetivo General](#21-objetivo-general)
-   2.2. [Objetivos Específicos](#22-objetivos-específicos)
-3. [Marco Teórico](#3-marco-teórico)
-   3.1. [Arquitectura Limpia](#31-arquitectura-limpia)
-   3.2. [.NET Core](#32-net-core)
-   3.3. [Angular + PWA](#33-angular--pwa)
-   3.4. [Keycloak + OAuth2](#34-keycloak--oauth2)
-   3.5. [PostgreSQL + UUID v7](#35-postgresql--uuid-v7)
-4. [Análisis del Sistema](#4-análisis-del-sistema)
-   4.1. [Requerimientos Funcionales](#41-requerimientos-funcionales)
-   4.2. [Requerimientos No Funcionales](#42-requerimientos-no-funcionales)
-   4.3. [Actores del Sistema](#43-actores-del-sistema)
-   4.4. [Casos de Uso](#44-casos-de-uso)
-5. [Diseño del Sistema](#5-diseño-del-sistema)
-   5.1. [Arquitectura del Sistema](#51-arquitectura-del-sistema)
-   5.2. [Stack Tecnológico](#52-stack-tecnológico)
-   5.3. [Modelo de Base de Datos](#53-modelo-de-base-datos)
-   5.4. [Diccionario de Datos](#54-diccionario-de-datos)
-6. [Implementación](#6-implementación)
-   6.1. [Requisitos de Instalación](#61-requisitos-de-instalación)
-   6.2. [Estructura del Backend](#62-estructura-del-backend-arquitectura-limpia)
-   6.3. [Estructura del Frontend](#63-estructura-del-frontend)
-   6.4. [Seguridad y Auditoría](#64-seguridad-y-auditoría)
-   6.5. [Endpoints Principales](#65-endpoints-principales)
-7. [Pruebas](#7-pruebas)
-   7.1. [Casos de Prueba](#71-casos-de-prueba)
-   7.2. [Resultados](#72-resultados)
-8. [Conclusiones y Recomendaciones](#8-conclusiones-y-recomendaciones)
-   8.1. [Conclusiones](#81-conclusiones)
-   8.2. [Recomendaciones](#82-recomendaciones)
-9. [Bibliografía](#9-bibliografía)
-10. [Anexos](#10-anexos)
-    10.1. [Enlace al Repositorio](#101-enlace-al-repositorio-github)
-    10.2. [Capturas de Pantalla](#102-capturas-de-pantalla)
-    10.3. [Docker Compose](#103-docker-compose)
+1. [Introducción](#1-introducción)  
+   - [Contexto General](#11-contexto-general)  
+   - [Problemática](#12-problemática)  
+   - [Antecedentes](#13-antecedentes)  
+   - [Justificación](#14-justificación)  
+   - [Alcance y Limitaciones](#15-alcance-y-limitaciones)  
+
+2. [Objetivos](#2-objetivos)  
+   - [Objetivo General](#21-objetivo-general)  
+   - [Objetivos Específicos](#22-objetivos-específicos)  
+
+3. [Marco Teórico](#3-marco-teórico)  
+   - [Arquitectura Limpia](#31-arquitectura-limpia)  
+   - [.NET Core](#32-net-core)  
+   - [Angular + PWA](#33-angular--pwa)  
+   - [Keycloak + OAuth2](#34-keycloak--oauth2)  
+   - [PostgreSQL + UUID v7](#35-postgresql--uuid-v7)  
+
+4. [Análisis del Sistema](#4-análisis-del-sistema)  
+   - [Requerimientos Funcionales](#41-requerimientos-funcionales)  
+   - [Requerimientos No Funcionales](#42-requerimientos-no-funcionales)  
+   - [Actores del Sistema](#43-actores-del-sistema)  
+   - [Casos de Uso](#44-casos-de-uso)  
+
+5. [Diseño del Sistema](#5-diseño-del-sistema)  
+   - [Arquitectura del Sistema](#51-arquitectura-del-sistema)  
+   - [Stack Tecnológico](#52-stack-tecnológico)  
+   - [Modelo de Base de Datos](#53-modelo-de-base-de-datos)  
+   - [Diccionario de Datos](#54-diccionario-de-datos)  
+
+6. [Implementación](#6-implementación)  
+   - [Requisitos de Instalación](#61-requisitos-de-instalación)  
+   - [Estructura del Backend](#62-estructura-del-backend-arquitectura-limpia)  
+   - [Estructura del Frontend](#63-estructura-del-frontend)  
+   - [Seguridad y Auditoría](#64-seguridad-y-auditoría)  
+   - [Endpoints Principales](#65-endpoints-principales)  
+
+7. [Pruebas](#7-pruebas)  
+   - [Casos de Prueba](#71-casos-de-prueba)  
+   - [Resultados](#72-resultados)  
+
+8. [Conclusiones y Recomendaciones](#8-conclusiones-y-recomendaciones)  
+   - [Conclusiones](#81-conclusiones)  
+   - [Recomendaciones](#82-recomendaciones)  
+
+9. [Bibliografía](#9-bibliografía)  
+
+10. [Anexos](#10-anexos)  
+   - [Enlace al Repositorio](#101-enlace-al-repositorio-github)  
+   - [Capturas de Pantalla](#102-capturas-de-pantalla)  
+   - [Docker Compose](#103-docker-compose)  
 
 ---
-
 ## 1. INTRODUCCIÓN
 
 El presente proyecto de Programación Web II se centra en el desarrollo de una plataforma integral de trazabilidad para la empresa Gravetal Bolivia S.A.. La solución utiliza un stack tecnológico de última generación compuesto por Angular 21 en el frontend y .NET Core 9 en el backend. El sistema permite el seguimiento digital de derivados de soja desde su acopio en Puerto Quijarro hasta su exportación por la hidrovía Paraguay-Paraná, integrando seguridad avanzada con Keycloak y un despliegue automatizado mediante DevOps.
@@ -160,7 +190,7 @@ El sistema controlará el ciclo de trazabilidad de los lotes de soja desde su re
 
 ### 2.1. Objetivo General
 
-Desarrollar un sistema web de trazabilidad agrícola para Gravetal Bolivia S.A. utilizando una arquitectura limpia con .NET Core 9 y una interfaz PWA con Angular 21, asegurando la integridad de los datos en PostgreSQL 18.
+Desarrollar un sistema web de trazabilidad agrícola para Gravetal Bolivia S.A. utilizando una arquitectura limpia con .NET Core 10 y una interfaz PWA con Angular 21, asegurando la integridad de los datos en PostgreSQL 18.
 
 ### 2.2. Objetivos Específicos
 

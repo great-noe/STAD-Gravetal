@@ -18,74 +18,56 @@
 
 ---
 
-## 1. PORTADA
+## 📋 ESTRUCTURA DEL DOCUMENTO DE PROYECTO
 
-<div align="center">
+### 1. PORTADA
+┌─────────────────────────────────────────────────────────────────┐
+│                                                                 │
+│ UNIVERSIDAD PRIVADA DOMINGO SAVIO                               │
+│ SUB-SEDE LA PAZ                                                 │
+│                                                                 │
+│ FACULTAD DE INGENIERÍA                                          │
+│ CARRERA DE INGENIERÍA DE SISTEMAS                               │
+│                                                                 │
+│ PROGRAMACIÓN WEB II                                             │
+│                                                                 │
+│ ┌───────────────────────────────────────────────────────────┐   │
+│ │ Sistema de Trazabilidad Agrícola Digital (STAD): para el  │   │
+│ │ Control de Exportaciones en la Hidrovía Paraguay-Paraná   │   │
+│ │ Caso Gravetal Bolivia S.A.                                │   │
+│ └───────────────────────────────────────────────────────────┘   │
+│                                                                 │
+│ ESTUDIANTE:                                                     │
+│ • Noel David Limachi Abelo                                      │
+│                                                                 │
+│ DOCENTE: Lic. Andrés Grover Albino Chambi                       │
+│                                                                 │
+│ La Paz - Bolivia                                                │
+│ Marzo de 2026                                                   │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
 
-**UNIVERSIDAD PRIVADA DOMINGO SAVIO**  
-**SUB-SEDE LA PAZ**
+### 2. ÍNDICE GENERAL
 
-<br>
+## TABLA DE CONTENIDO
 
-**FACULTAD DE INGENIERÍA**  
-**CARRERA DE INGENIERÍA DE SISTEMAS**
+1. INTRODUCCIÓN .................................................. 4
+   1.1. Antecedentes ............................................. 4
+   1.2. Objetivo General ......................................... 5
+   1.3. Objetivos Específicos .................................... 5
+   1.4. Requerimientos ........................................... 6
+   1.5. Justificación ............................................ 7
 
-<br>
+2. DISEÑO DEL SISTEMA ............................................ 8
+   2.1. Arquitectura del Sistema ................................. 8
+   2.2. Stack Tecnológico ........................................ 9
 
-**PROGRAMACIÓN WEB II**
+3. IMPLEMENTACIÓN ................................................ 10
+   3.1. Requisitos de Instalación ................................ 10
+   3.2. Estructura de la Solución ................................ 11
+   3.3. Seguridad y Auditoría .................................... 12
 
-<br>
-
----
-
-### **Sistema de Trazabilidad Agrícola Digital (STAD)**  
-**Para el Control de Exportaciones en la Hidrovía Paraguay-Paraná**  
-**Caso: Gravetal Bolivia S.A.**
-
----
-
-</div>
-
-<br>
-
-**ESTUDIANTE:**  
-- Noel David Limachi Abelo  
-
-<br>
-
-**DOCENTE:**  
-- Lic. Andrés Grover Albino Chambi  
-
-<br>
-
-<div align="center">
-
-**La Paz - Bolivia**  
-**Marzo de 2026**
-
-</div>
-
-## 2. TABLA DE CONTENIDO
-
-1. [Portada](#1-portada)
-2. [Tabla de Contenido](#2-tabla-de-contenido)
-3. [Introducción](#3-introducción)
-   - [Contexto General](#31-contexto-general)
-   - [Problemática](#32-problemática)
-   - [Antecedentes](#33-antecedentes)
-   - [Justificación](#34-justificación)
-   - [Alcance y Limitaciones](#35-alcance-y-limitaciones)
-4. [Objetivos](#4-objetivos)
-   - [Objetivo General](#41-objetivo-general)
-   - [Objetivos Específicos](#42-objetivos-específicos)
-5. [Marco Teórico](#5-marco-teórico)
-6. [Análisis del Sistema](#6-análisis-del-sistema)
-7. [Diseño del Sistema](#7-diseño-del-sistema)
-8. [Implementación](#8-implementación)
-9. [Pruebas](#9-pruebas)
-10. [Conclusiones y Recomendaciones](#10-conclusiones-y-recomendaciones)
-11. [Bibliografía](#11-bibliografía)
-12. [Anexos](#12-anexos)
+4. BIBLIOGRAFÍA .................................................. 13
 
 ---
 
@@ -119,7 +101,39 @@ Gravetal Bolivia S.A. fue establecida en 1993 con el propósito de fomentar el d
 
 **Visión:** Consolidarse como la empresa líder en el procesamiento y exportación de derivados de soja en Bolivia, fundamentando sus operaciones en principios de equidad, sostenibilidad y respeto al medio ambiente.
 
-### 3.4. JUSTIFICACIÓN
+### 1.2. OBJETIVO GENERAL
+
+Desarrollar un sistema web de trazabilidad agrícola para Gravetal Bolivia S.A. utilizando una arquitectura limpia con .NET Core 9 y una interfaz PWA con Angular 21, asegurando la integridad de los datos en PostgreSQL 18.
+
+### 1.3. OBJETIVOS ESPECÍFICOS
+
+- Diseñar la infraestructura de datos y despliegue a través de una base de datos normalizada en PostgreSQL 18 y la orquestación de contenedores con un compose.yaml funcional, permitiendo su publicación escalable en la nube.
+- Desarrollar una interfaz web reactiva utilizando Angular 21 bajo el estándar PWA y diseño mobile-first, integrando interceptores y guards para asegurar una navegación fluida y segura en los puntos de acopio de Gravetal.
+- Implementar la lógica de negocio en el backend mediante Arquitectura Limpia en .NET Core 9, integrando Keycloak como servidor de identidad para garantizar la seguridad, auditoría y correcta gestión de roles institucionales.
+
+### 1.4. REQUERIMIENTOS
+
+#### 1.4.1. Requerimientos Funcionales (RF)
+
+| ID | Requerimiento | Descripción |
+|----|---------------|-------------|
+| **RF1** | Gestión de Autenticación y Autorización | El sistema debe restringir el acceso mediante Guards e Interceptors de Angular, validando tokens JWT emitidos por Keycloak. |
+| **RF2** | Registro de Trazabilidad de Lotes | Permitir la creación, edición y seguimiento de lotes de soja, asignando un UUID v7 único para su identificación cronológica. |
+| **RF3** | Control de Auditoría | Registrar de forma automática quién, cuándo y qué cambio se realizó en cada etapa del proceso de exportación. |
+| **RF4** | Generación de Reportes Técnicos | El sistema debe emitir reportes y documentación técnica sobre el estado de los lotes y su destino en la hidrovía. |
+| **RF5** | Validación de Datos | Implementar validaciones estrictas en el backend para asegurar que los datos de pesaje y calidad cumplan con los estándares de exportación. |
+
+#### 1.4.2. Requerimientos No Funcionales (RNF)
+
+| ID | Requerimiento | Descripción |
+|----|---------------|-------------|
+| **RNF1**| Disponibilidad y PWA | La aplicación debe funcionar como una PWA para permitir la consulta de datos básicos incluso en condiciones de conectividad limitada en los muelles. |
+| **RNF2**| Arquitectura y Mantenibilidad | El código fuente debe seguir los principios de Arquitectura Limpia para facilitar la escalabilidad y el mantenimiento a largo plazo. |
+| **RNF3**| Seguridad OWASP | El desarrollo debe mitigar vulnerabilidades comunes (XSS, SQL Injection) siguiendo las recomendaciones de seguridad. |
+| **RNF4**| Diseño Responsivo | La interfaz debe ser completamente adaptable a dispositivos móviles y tablets utilizando un diseño mobile-first. |
+| **RNF5**| Documentación de API | La lógica del backend debe estar documentada automáticamente mediante Swagger/OpenAPI para facilitar la integración. |
+
+### 1.5. JUSTIFICACIÓN
 
 #### 3.4.1. Justificación Técnica
 

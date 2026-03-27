@@ -349,7 +349,7 @@ El esquema relacional central gira alrededor del registro del lote, los usuarios
 
 Para ejecutar este proyecto de forma local se requiere:
 
-- **.NET SDK 9**
+- **.NET SDK 10**
 - **Node.js (LTS)**
 - **Angular CLI**
 - **Docker Desktop** (para orquestar PostgreSQL y Keycloak)

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace STAD.Domain.Entities;
 
@@ -18,6 +18,10 @@ public class Lote
     public string Destino { get; private set; } = string.Empty; // Ej: "Puerto Quijarro", "Rosario"
     public string Estado { get; private set; } = string.Empty;  // Ej: "EN_ACOPIO", "EN_TRANSITO", "EXPORTADO"
 
+    // Datos espaciales para trazabilidad fluvial
+    public double Latitud { get; set; }
+    public double Longitud { get; set; }
+
     // Criterio de Evaluación: Auditoría y Trazabilidad de cambios
     public DateTime FechaRegistro { get; private set; }
     public string UsuarioRegistro { get; private set; } = string.Empty; // Aquí guardaremos el ID del usuario de Keycloak
@@ -26,7 +30,7 @@ public class Lote
     protected Lote() { }
 
     // Constructor controlado para crear un nuevo lote desde la API
-    public Lote(Guid productorId, string numeroLote, decimal pesoToneladas, string destino, string usuarioRegistro)
+    public Lote(Guid productorId, string numeroLote, decimal pesoToneladas, string destino, string usuarioRegistro, double latitud = 0, double longitud = 0)
     {
         // .NET 9 incluye soporte nativo para UUID v7, ideal para bases de datos de alto volumen
         Id = Guid.CreateVersion7();
@@ -37,6 +41,10 @@ public class Lote
         FechaAcopio = DateTime.UtcNow;
         Destino = destino;
         Estado = "EN_ACOPIO"; // Estado inicial por defecto
+
+        // Datos espaciales
+        Latitud = latitud;
+        Longitud = longitud;
 
         FechaRegistro = DateTime.UtcNow;
         UsuarioRegistro = usuarioRegistro;

@@ -25,7 +25,9 @@ public class CrearLoteCommandHandler : IRequestHandler<CrearLoteCommand, Guid>
             request.NumeroLote,
             request.PesoToneladas,
             request.Destino,
-            request.UsuarioRegistro
+            request.UsuarioRegistro,
+            request.Latitud,
+            request.Longitud
         );
 
         // 2. Usamos el contrato para guardar (El Handler no sabe que es Postgres)

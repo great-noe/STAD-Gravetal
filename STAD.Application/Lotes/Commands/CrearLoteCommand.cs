@@ -8,5 +8,7 @@ public record CrearLoteCommand(
     string NumeroLote,
     decimal PesoToneladas,
     string Destino,
-    string UsuarioRegistro
+    string UsuarioRegistro,
+    double Latitud,
+    double Longitud
 ) : IRequest<Guid>;

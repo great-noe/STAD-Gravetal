@@ -37,6 +37,7 @@
 ### PROGRAMACIÓN WEB II  
 
 <br>
+<img width="470" height="412" alt="image" src="https://github.com/user-attachments/assets/02ba8b19-2239-46a2-adbb-00955b2db459" />
 
 ---
 

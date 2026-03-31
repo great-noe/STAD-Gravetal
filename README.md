@@ -445,19 +445,41 @@ El proyecto Sistema de Trazabilidad Agrícola Digital (STAD) digitaliza exitosam
 ### 10.3. Docker Compose
 El proyecto se orquesta en entornos locales y productivos mediante un manifiesto estandarizado:
 ```yaml
-version: '3.8'
 services:
+  # Base de Datos PostgreSQL 18
   stad-postgres:
-    image: postgres:18
+    image: postgres:18-alpine
+    container_name: stad_db
     ports:
       - "5432:5432"
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: 12345678
-      POSTGRES_DB: stad_db
+      POSTGRES_DB: STAD_Db
+    volumes:
+      - stad_db_data:/var/lib/postgresql/data
+    restart: always
+
+  # Servidor de Autenticación Keycloak 26.0
   stad-keycloak:
     image: quay.io/keycloak/keycloak:26.0
+    container_name: stad_keycloak
     ports:
       - "8080:8080"
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KC_DB=postgres
+      - KC_DB_URL=jdbc:postgresql://stad-postgres:5432/STAD_Db
+      - KC_DB_USERNAME=admin
+      - KC_DB_PASSWORD=12345678
     command: start-dev
+    depends_on:
+      - stad-postgres
+    volumes:
+      - ./keycloak-theme:/opt/keycloak/themes
+    restart: unless-stopped
+
+volumes:
+  stad_db_data:
 ```

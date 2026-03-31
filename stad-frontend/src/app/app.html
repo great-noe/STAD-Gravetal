@@ -1,129 +1,320 @@
-<div style="text-align: center; margin-top: 50px; font-family: 'Segoe UI', sans-serif; color: #2c3e50; background: #f4f6f8; min-height: 100vh; padding-bottom: 40px;">
-  <button (click)="cerrarSesion()"
-          style="position: absolute; top: 20px; right: 20px; background-color: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
-    🚪 Cerrar Sesión
-  </button>
-  <h1 style="font-size: 28px; font-weight: 700; color: #1a3a5c; letter-spacing: 0.5px;">🌾 Sistema STAD - Gravetal</h1>
-  <p style="color: #6c757d; font-size: 14px;">Sesión iniciada correctamente a través de Keycloak.</p>
+<!-- ═══ CONTENEDOR PRINCIPAL: Layout Admin Dashboard ═══ -->
+<div style="display: flex; min-height: 100vh; font-family: 'Segoe UI', sans-serif;">
 
-  <!-- ═══ RBAC: Formulario solo visible para Admin y Operador ═══ -->
-  @if (isAdmin || isOperador) {
-  <form [formGroup]="loteForm" (ngSubmit)="guardarLote()"
-        style="margin: 30px auto; width: 50%; background: #ffffff; padding: 30px 35px; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.12); text-align: left;">
+  <!-- ═══ SIDEBAR: Columna Izquierda ═══ -->
+  <aside style="width: 250px; background-color: #212529; color: white; display: flex; flex-direction: column; padding: 0; flex-shrink: 0;">
 
-    <h3 style="margin: 0 0 20px 0; color: #333; font-size: 20px; border-bottom: 2px solid #28a745; padding-bottom: 10px;">
-      📦 Registrar Nuevo Lote
-    </h3>
-
-    <div style="margin-bottom: 16px;">
-      <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #555;">Número de Lote</label>
-      <input formControlName="numeroLote" type="text" placeholder="Ej: L-2026-001"
-             style="width: 100%; padding: 10px 14px; border: 1.5px solid #ccc; border-radius: 8px; font-size: 14px; box-sizing: border-box; transition: border-color 0.3s;"
-             onfocus="this.style.borderColor='#28a745'" onblur="this.style.borderColor='#ccc'">
-      @if (loteForm.get('numeroLote')?.invalid && loteForm.get('numeroLote')?.touched) {
-        <span style="color: #dc3545; font-size: 12px;">El número de lote es obligatorio.</span>
-      }
+    <!-- Logo / Título del sistema -->
+    <div style="padding: 28px 24px 20px 24px; border-bottom: 1px solid #343a40;">
+      <div style="font-size: 28px; text-align: center; margin-bottom: 6px;">🌾</div>
+      <h2 style="margin: 0; font-size: 16px; font-weight: 700; color: #ffffff; text-align: center; letter-spacing: 0.3px;">Sistema STAD</h2>
+      <p style="margin: 4px 0 0 0; font-size: 11px; color: #adb5bd; text-align: center;">Gravetal</p>
     </div>
 
-    <div style="margin-bottom: 16px;">
-      <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #555;">Peso (Toneladas)</label>
-      <input formControlName="pesoToneladas" type="number" placeholder="Ej: 150.5"
-             style="width: 100%; padding: 10px 14px; border: 1.5px solid #ccc; border-radius: 8px; font-size: 14px; box-sizing: border-box; transition: border-color 0.3s;"
-             onfocus="this.style.borderColor='#28a745'" onblur="this.style.borderColor='#ccc'">
-      @if (loteForm.get('pesoToneladas')?.invalid && loteForm.get('pesoToneladas')?.touched) {
-        <span style="color: #dc3545; font-size: 12px;">El peso es obligatorio y debe ser mayor a 0.</span>
+    <!-- Tarjeta de Perfil de Usuario -->
+    <div style="display: flex; flex-direction: column; align-items: center; padding: 20px 10px; border-bottom: 1px solid #444; margin-bottom: 20px;">
+      @if (fotoUrl) {
+        <img [src]="fotoUrl" alt="Foto de perfil"
+             style="border-radius: 50%; border: 3px solid #28a745; margin-bottom: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.3);">
       }
+      <h4 style="margin: 0; color: #fff; font-size: 16px; text-align: center;">{{ nombreUsuario }}</h4>
+      <span style="color: #adb5bd; font-size: 13px; text-align: center; margin-top: 5px;">{{ cargoUsuario }}</span>
     </div>
 
-    <div style="margin-bottom: 24px;">
-      <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #555;">🚢 Puerto de Destino</label>
-      <select formControlName="destino" (change)="alCambiarDestino($event)"
-              style="width: 100%; padding: 10px 14px; border: 1.5px solid #ccc; border-radius: 8px; font-size: 14px; box-sizing: border-box; transition: border-color 0.3s; background-color: #fff; cursor: pointer;"
-              onfocus="this.style.borderColor='#28a745'" onblur="this.style.borderColor='#ccc'">
-        <option value="" disabled>Seleccione un puerto...</option>
-        @for (puerto of puertosFluviales; track puerto.nombre) {
-          <option [value]="puerto.nombre">{{ puerto.nombre }}</option>
-        }
-      </select>
-      @if (loteForm.get('destino')?.invalid && loteForm.get('destino')?.touched) {
-        <span style="color: #dc3545; font-size: 12px;">Debe seleccionar un puerto de destino.</span>
+    <!-- Menú de Navegación -->
+    <nav style="flex: 1; padding: 20px 12px;">
+
+      <!-- Botón: Nuevo Despacho — Solo Admin u Operador -->
+      @if (isAdmin || isOperador) {
+        <button (click)="cambiarVista('formulario')"
+                style="width: 100%; display: flex; align-items: center; gap: 10px; padding: 12px 16px; margin-bottom: 6px; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.2s; text-align: left;"
+                [style.background-color]="vistaActual === 'formulario' ? '#28a745' : 'transparent'"
+                [style.color]="vistaActual === 'formulario' ? '#ffffff' : '#adb5bd'">
+          <span>📝</span> Nuevo Despacho
+        </button>
       }
+
+      <!-- Botón: Historial de Lotes — Para todos -->
+      <button (click)="cambiarVista('tabla')"
+              style="width: 100%; display: flex; align-items: center; gap: 10px; padding: 12px 16px; margin-bottom: 6px; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.2s; text-align: left;"
+              [style.background-color]="vistaActual === 'tabla' ? '#0d6efd' : 'transparent'"
+              [style.color]="vistaActual === 'tabla' ? '#ffffff' : '#adb5bd'">
+        <span>📊</span> Historial de Lotes
+      </button>
+
+      <!-- Botón: Mapa Fluvial — Solo Admin o Auditor -->
+      @if (isAdmin || isAuditor) {
+        <button (click)="cambiarVista('mapa')"
+                style="width: 100%; display: flex; align-items: center; gap: 10px; padding: 12px 16px; margin-bottom: 6px; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.2s; text-align: left;"
+                [style.background-color]="vistaActual === 'mapa' ? '#0dcaf0' : 'transparent'"
+                [style.color]="vistaActual === 'mapa' ? '#000000' : '#adb5bd'">
+          <span>🗺️</span> Mapa Fluvial
+        </button>
+      }
+
+      <!-- ── Separador Admin ─────────────────────────────────────────── -->
+      @if (isAdmin) {
+        <div style="margin: 10px 0; border-top: 1px solid #343a40; padding-top: 10px;">
+          <span style="font-size: 10px; color: #6c757d; text-transform: uppercase; letter-spacing: 1px; padding: 0 4px;">Administración</span>
+        </div>
+
+        <!-- Botón: Auditoría del Sistema — Solo Admin -->
+        <button (click)="cambiarVista('auditoria')"
+                style="width: 100%; display: flex; align-items: center; gap: 10px; padding: 12px 16px; margin-bottom: 6px; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.2s; text-align: left;"
+                [style.background-color]="vistaActual === 'auditoria' ? '#fd7e14' : 'transparent'"
+                [style.color]="vistaActual === 'auditoria' ? '#ffffff' : '#adb5bd'">
+          <span>📜</span> Auditoría
+        </button>
+      }
+
+    </nav>
+
+
+    <!-- Footer del sidebar: usuario / cerrar sesión -->
+    <div style="padding: 16px 12px; border-top: 1px solid #343a40;">
+      <button (click)="cerrarSesion()"
+              style="width: 100%; display: flex; align-items: center; gap: 10px; padding: 10px 16px; background-color: #dc3545; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600;">
+        🚪 Cerrar Sesión
+      </button>
     </div>
 
-    <div style="display: flex; gap: 16px; margin-bottom: 24px;">
-      <div style="flex: 1;">
-        <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #555;">📍 Latitud <span style="font-weight: 400; color: #999; font-size: 11px;">(auto)</span></label>
-        <input formControlName="latitud" type="number" step="0.0001" readonly
-               style="width: 100%; padding: 10px 14px; border: 1.5px solid #ccc; border-radius: 8px; font-size: 14px; box-sizing: border-box; background-color: #f8f9fa; color: #6c757d; cursor: not-allowed;">
-        @if (loteForm.get('latitud')?.invalid && loteForm.get('latitud')?.touched) {
-          <span style="color: #dc3545; font-size: 12px;">Seleccione un puerto para asignar latitud.</span>
-        }
+  </aside>
+
+  <!-- ═══ MAIN CONTENT: Columna Derecha ═══ -->
+  <main style="flex: 1; background-color: #f8f9fa; padding: 30px; overflow-y: auto;">
+
+    <!-- ─── VISTA: FORMULARIO (Admin u Operador) ─── -->
+    @if (vistaActual === 'formulario') {
+      <div>
+        <h1 style="font-size: 24px; font-weight: 700; color: #1a3a5c; margin: 0 0 4px 0;">📝 Nuevo Despacho</h1>
+        <p style="color: #6c757d; font-size: 14px; margin: 0 0 24px 0;">Registra un nuevo lote en el sistema de trazabilidad.</p>
+
+        <form [formGroup]="loteForm" (ngSubmit)="guardarLote()"
+              style="max-width: 640px; background: #ffffff; padding: 30px 35px; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.08); text-align: left;">
+
+          <h3 style="margin: 0 0 20px 0; color: #333; font-size: 18px; border-bottom: 2px solid #28a745; padding-bottom: 10px;">
+            📦 Registrar Nuevo Lote
+          </h3>
+
+          <div style="margin-bottom: 16px;">
+            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #555;">Número de Lote</label>
+            <input formControlName="numeroLote" type="text" placeholder="Ej: L-2026-001"
+                   style="width: 100%; padding: 10px 14px; border: 1.5px solid #ccc; border-radius: 8px; font-size: 14px; box-sizing: border-box; transition: border-color 0.3s;"
+                   onfocus="this.style.borderColor='#28a745'" onblur="this.style.borderColor='#ccc'">
+            @if (loteForm.get('numeroLote')?.invalid && loteForm.get('numeroLote')?.touched) {
+              <span style="color: #dc3545; font-size: 12px;">El número de lote es obligatorio.</span>
+            }
+          </div>
+
+          <div style="margin-bottom: 16px;">
+            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #555;">Peso (Toneladas)</label>
+            <input formControlName="pesoToneladas" type="number" placeholder="Ej: 150.5"
+                   style="width: 100%; padding: 10px 14px; border: 1.5px solid #ccc; border-radius: 8px; font-size: 14px; box-sizing: border-box; transition: border-color 0.3s;"
+                   onfocus="this.style.borderColor='#28a745'" onblur="this.style.borderColor='#ccc'">
+            @if (loteForm.get('pesoToneladas')?.invalid && loteForm.get('pesoToneladas')?.touched) {
+              <span style="color: #dc3545; font-size: 12px;">El peso es obligatorio y debe ser mayor a 0.</span>
+            }
+          </div>
+
+          <div style="margin-bottom: 24px;">
+            <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #555;">🚢 Puerto de Destino</label>
+            <select formControlName="destino" (change)="alCambiarDestino($event)"
+                    style="width: 100%; padding: 10px 14px; border: 1.5px solid #ccc; border-radius: 8px; font-size: 14px; box-sizing: border-box; transition: border-color 0.3s; background-color: #fff; cursor: pointer;"
+                    onfocus="this.style.borderColor='#28a745'" onblur="this.style.borderColor='#ccc'">
+              <option value="" disabled>Seleccione un puerto...</option>
+              @for (puerto of puertosFluviales; track puerto.nombre) {
+                <option [value]="puerto.nombre">{{ puerto.nombre }}</option>
+              }
+            </select>
+            @if (loteForm.get('destino')?.invalid && loteForm.get('destino')?.touched) {
+              <span style="color: #dc3545; font-size: 12px;">Debe seleccionar un puerto de destino.</span>
+            }
+          </div>
+
+          <div style="display: flex; gap: 16px; margin-bottom: 24px;">
+            <div style="flex: 1;">
+              <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #555;">📍 Latitud <span style="font-weight: 400; color: #999; font-size: 11px;">(auto)</span></label>
+              <input formControlName="latitud" type="number" step="0.0001" readonly
+                     style="width: 100%; padding: 10px 14px; border: 1.5px solid #ccc; border-radius: 8px; font-size: 14px; box-sizing: border-box; background-color: #f8f9fa; color: #6c757d; cursor: not-allowed;">
+              @if (loteForm.get('latitud')?.invalid && loteForm.get('latitud')?.touched) {
+                <span style="color: #dc3545; font-size: 12px;">Seleccione un puerto para asignar latitud.</span>
+              }
+            </div>
+            <div style="flex: 1;">
+              <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #555;">📍 Longitud <span style="font-weight: 400; color: #999; font-size: 11px;">(auto)</span></label>
+              <input formControlName="longitud" type="number" step="0.0001" readonly
+                     style="width: 100%; padding: 10px 14px; border: 1.5px solid #ccc; border-radius: 8px; font-size: 14px; box-sizing: border-box; background-color: #f8f9fa; color: #6c757d; cursor: not-allowed;">
+              @if (loteForm.get('longitud')?.invalid && loteForm.get('longitud')?.touched) {
+                <span style="color: #dc3545; font-size: 12px;">Seleccione un puerto para asignar longitud.</span>
+              }
+            </div>
+          </div>
+
+          <!-- ── Sección: Planificación de Viaje ── -->
+          <div style="margin: 24px 0 20px 0; border-top: 2px solid #e9ecef; padding-top: 20px;">
+            <h4 style="margin: 0 0 16px 0; color: #333; font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 8px;">
+              🗓️ Planificación de Viaje
+            </h4>
+
+            <!-- Embarcación -->
+            <div style="margin-bottom: 16px;">
+              <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #555;">⚓ Embarcación Asignada</label>
+              <select formControlName="embarcacion"
+                      style="width: 100%; padding: 10px 14px; border: 1.5px solid #ccc; border-radius: 8px; font-size: 14px; box-sizing: border-box; background-color: #fff; cursor: pointer; transition: border-color 0.3s;"
+                      onfocus="this.style.borderColor='#28a745'" onblur="this.style.borderColor='#ccc'">
+                <option value="" disabled>Seleccione una barcaza...</option>
+                @for (barcaza of listaBarcazas; track barcaza) {
+                  <option [value]="barcaza">{{ barcaza }}</option>
+                }
+              </select>
+              @if (loteForm.get('embarcacion')?.invalid && loteForm.get('embarcacion')?.touched) {
+                <span style="color: #dc3545; font-size: 12px;">Debe asignar una embarcación.</span>
+              }
+            </div>
+
+            <!-- Fechas en fila -->
+            <div style="display: flex; gap: 16px; margin-bottom: 8px;">
+              <div style="flex: 1;">
+                <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #555;">📅 Fecha de Salida</label>
+                <input formControlName="fechaSalida" type="datetime-local"
+                       [min]="fechaMinimaActual"
+                       style="width: 100%; padding: 10px 14px; border: 1.5px solid #ccc; border-radius: 8px; font-size: 13px; box-sizing: border-box; transition: border-color 0.3s;"
+                       onfocus="this.style.borderColor='#28a745'" onblur="this.style.borderColor='#ccc'">
+                @if (loteForm.get('fechaSalida')?.invalid && loteForm.get('fechaSalida')?.touched) {
+                  <span style="color: #dc3545; font-size: 12px;">La fecha de salida es obligatoria.</span>
+                }
+              </div>
+              <div style="flex: 1;">
+                <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #555;">🏁 Entrega Estimada (ETA)</label>
+                <input formControlName="fechaEntregaEstimada" type="datetime-local"
+                       [min]="fechaMinimaActual"
+                       style="width: 100%; padding: 10px 14px; border: 1.5px solid #ccc; border-radius: 8px; font-size: 13px; box-sizing: border-box; transition: border-color 0.3s;"
+                       onfocus="this.style.borderColor='#28a745'" onblur="this.style.borderColor='#ccc'">
+                @if (loteForm.get('fechaEntregaEstimada')?.invalid && loteForm.get('fechaEntregaEstimada')?.touched) {
+                  <span style="color: #dc3545; font-size: 12px;">La fecha de entrega estimada es obligatoria.</span>
+                }
+                @if (loteForm.errors?.['fechasInvalidas'] && (loteForm.touched || loteForm.dirty)) {
+                  <span style="color: #dc3545; font-size: 12px; font-weight: 600; display: block; margin-top: 4px;">
+                    ⚠️ La fecha de llegada no puede ser anterior ni igual a la salida.
+                  </span>
+                }
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" [disabled]="loteForm.invalid"
+                  style="width: 100%; padding: 12px; font-size: 16px; font-weight: 600; color: white; border: none; border-radius: 8px; cursor: pointer; transition: background-color 0.3s;"
+                  [style.background-color]="loteForm.invalid ? '#aaa' : '#28a745'">
+            Guardar Lote
+          </button>
+        </form>
       </div>
-      <div style="flex: 1;">
-        <label style="display: block; margin-bottom: 6px; font-weight: 600; color: #555;">📍 Longitud <span style="font-weight: 400; color: #999; font-size: 11px;">(auto)</span></label>
-        <input formControlName="longitud" type="number" step="0.0001" readonly
-               style="width: 100%; padding: 10px 14px; border: 1.5px solid #ccc; border-radius: 8px; font-size: 14px; box-sizing: border-box; background-color: #f8f9fa; color: #6c757d; cursor: not-allowed;">
-        @if (loteForm.get('longitud')?.invalid && loteForm.get('longitud')?.touched) {
-          <span style="color: #dc3545; font-size: 12px;">Seleccione un puerto para asignar longitud.</span>
-        }
+    }
+
+    <!-- ─── VISTA: TABLA (Todos los roles) ─── -->
+    @if (vistaActual === 'tabla') {
+      <div>
+        <h1 style="font-size: 24px; font-weight: 700; color: #1a3a5c; margin: 0 0 4px 0;">📊 Historial de Lotes</h1>
+        <p style="color: #6c757d; font-size: 14px; margin: 0 0 24px 0;">Lotes registrados en la base de datos PostgreSQL.</p>
+
+        <table style="width: 100%; text-align: left; border-collapse: collapse; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.1);">
+          <thead>
+            <tr style="background: linear-gradient(135deg, #1a3a5c 0%, #2c5f8a 100%); color: #ffffff;">
+              <th style="padding: 14px 16px; font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Número de Lote</th>
+              <th style="padding: 14px 16px; font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Peso (Ton)</th>
+              <th style="padding: 14px 16px; font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Destino</th>
+              <th style="padding: 14px 16px; font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Usuario Registro</th>
+              <th style="padding: 14px 16px; font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Estado</th>
+              <th style="padding: 14px 16px; font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (lote of lotes; track lote.id) {
+              <tr style="background-color: #ffffff; border-bottom: 1px solid #e9ecef; transition: background-color 0.2s;"
+                  onmouseenter="this.style.backgroundColor='#f0f7ff'" onmouseleave="this.style.backgroundColor='#ffffff'">
+                <td style="padding: 14px 16px; font-weight: 600; color: #2c3e50;">{{ lote.numeroLote }}</td>
+                <td style="padding: 14px 16px; color: #495057;">{{ lote.pesoToneladas }}</td>
+                <td style="padding: 14px 16px; color: #495057;">{{ lote.destino }}</td>
+                <td style="padding: 14px 16px; color: #6c757d; font-style: italic;">{{ lote.usuarioRegistro }}</td>
+                <td style="padding: 14px 16px;">
+                  <span style="display: inline-block; background-color: #d4edda; color: #155724; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;">
+                    🚢 En Tránsito
+                  </span>
+                </td>
+                <td style="padding: 14px 16px;">
+                  <button (click)="verEnMapa(lote)"
+                          style="background-color: #0d6efd; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600; transition: background-color 0.2s;"
+                          onmouseenter="this.style.backgroundColor='#0b5ed7'" onmouseleave="this.style.backgroundColor='#0d6efd'">
+                    🗺️ Ubicar en Mapa
+                  </button>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="5" style="padding: 30px; text-align: center; color: #6c757d; font-style: italic; background-color: #ffffff;">
+                  Cargando lotes o no hay lotes registrados...
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+
+    <!-- ─── VISTA: MAPA (Admin y Auditor) ─── -->
+    <!-- CRÍTICO: Usamos [style.display] en lugar de @if para NO destruir la instancia de Leaflet -->
+    <div [style.display]="vistaActual === 'mapa' ? 'block' : 'none'">
+      <h1 style="font-size: 24px; font-weight: 700; color: #1a3a5c; margin: 0 0 4px 0;">🗺️ Mapa Fluvial</h1>
+      <p style="color: #6c757d; font-size: 14px; margin: 0 0 24px 0;">Trazabilidad Fluvial — Hidrovía Paraguay-Paraná.</p>
+
+      <div id="mapa-trazabilidad"
+           style="height: 520px; width: 100%; border-radius: 12px; border: 2px solid #dee2e6; box-shadow: 0 4px 16px rgba(0,0,0,0.1); z-index: 1;">
       </div>
     </div>
 
-    <button type="submit" [disabled]="loteForm.invalid"
-            style="width: 100%; padding: 12px; font-size: 16px; font-weight: 600; color: white; border: none; border-radius: 8px; cursor: pointer; transition: background-color 0.3s;"
-            [style.background-color]="loteForm.invalid ? '#aaa' : '#28a745'">
-      Guardar Lote
-    </button>
-  </form>
-  }
 
-  <hr style="margin: 40px auto; width: 80%; border: none; border-top: 1px solid #dee2e6;">
 
-  <h2 style="font-size: 22px; font-weight: 700; color: #1a3a5c;">📋 Lotes Registrados en Base de Datos</h2>
+    <!-- ─── VISTA: AUDITORÍA DEL SISTEMA (Solo Admin) ─── -->
+    @if (vistaActual === 'auditoria') {
+      <div>
+        <!-- Encabezado -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+          <div>
+            <h1 style="font-size: 24px; font-weight: 700; color: #1a3a5c; margin: 0 0 4px 0;">📜 Auditoría del Sistema</h1>
+            <p style="color: #6c757d; font-size: 14px; margin: 0;">Registro de actividad — últimas 24 horas.</p>
+          </div>
+          <button (click)="exportarAuditoriaPDF()"
+                  style="display: flex; align-items: center; gap: 8px; padding: 10px 20px; background-color: #1a3a5c; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; box-shadow: 0 2px 6px rgba(26,58,92,0.3);">
+            📄 Exportar PDF
+          </button>
+        </div>
 
-  <table style="margin: 20px auto; width: 85%; text-align: left; border-collapse: collapse; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.1);">
-    <thead>
-      <tr style="background: linear-gradient(135deg, #1a3a5c 0%, #2c5f8a 100%); color: #ffffff;">
-        <th style="padding: 14px 16px; font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Número de Lote</th>
-        <th style="padding: 14px 16px; font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Peso (Ton)</th>
-        <th style="padding: 14px 16px; font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Destino</th>
-        <th style="padding: 14px 16px; font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Usuario Registro</th>
-        <th style="padding: 14px 16px; font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Estado</th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (lote of lotes; track lote.id) {
-      <tr style="background-color: #ffffff; border-bottom: 1px solid #e9ecef; transition: background-color 0.2s;"
-          onmouseenter="this.style.backgroundColor='#f0f7ff'" onmouseleave="this.style.backgroundColor='#ffffff'">
-        <td style="padding: 14px 16px; font-weight: 600; color: #2c3e50;">{{ lote.numeroLote }}</td>
-        <td style="padding: 14px 16px; color: #495057;">{{ lote.pesoToneladas }}</td>
-        <td style="padding: 14px 16px; color: #495057;">{{ lote.destino }}</td>
-        <td style="padding: 14px 16px; color: #6c757d; font-style: italic;">{{ lote.usuarioRegistro }}</td>
-        <td style="padding: 14px 16px;">
-          <span style="display: inline-block; background-color: #d4edda; color: #155724; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;">
-            🚢 En Tránsito
-          </span>
-        </td>
-      </tr>
-      } @empty {
-      <tr>
-        <td colspan="5" style="padding: 30px; text-align: center; color: #6c757d; font-style: italic; background-color: #ffffff;">
-          Cargando lotes o no hay lotes registrados...
-        </td>
-      </tr>
-      }
-    </tbody>
-  </table>
+        <!-- Tabla de auditoría -->
+        <table style="width: 100%; text-align: left; border-collapse: collapse; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.08);">
+          <thead>
+            <tr style="background: linear-gradient(135deg, #1a3a5c 0%, #2c5f8a 100%); color: #ffffff;">
+              <th style="padding: 14px 16px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap;">Fecha / Hora</th>
+              <th style="padding: 14px 16px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Usuario</th>
+              <th style="padding: 14px 16px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Acción</th>
+              <th style="padding: 14px 16px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Dirección IP</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (log of registrosAuditoria; track log.fecha) {
+              <tr style="background-color: #ffffff; border-bottom: 1px solid #e9ecef; transition: background-color 0.2s;"
+                  onmouseenter="this.style.backgroundColor='#fff8f0'" onmouseleave="this.style.backgroundColor='#ffffff'">
+                <td style="padding: 12px 16px; color: #6c757d; font-family: monospace; font-size: 12.5px; white-space: nowrap;">{{ log.fecha }}</td>
+                <td style="padding: 12px 16px; font-weight: 600; color: #2c3e50; font-size: 13px;">{{ log.usuario }}</td>
+                <td style="padding: 12px 16px; color: #495057;">{{ log.accion }}</td>
+                <td style="padding: 12px 16px; color: #6c757d; font-family: monospace; font-size: 12.5px;">{{ log.ip }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
 
-  <!-- ═══ RBAC: Mapa solo visible para Admin y Auditor ═══ -->
-  @if (isAdmin || isAuditor) {
-  <hr style="margin: 40px auto; width: 80%; border: none; border-top: 1px solid #dee2e6;">
-
-  <h2 style="font-size: 22px; font-weight: 700; color: #1a3a5c;">🗺️ Trazabilidad Fluvial (Hidrovía Paraguay-Paraná)</h2>
-
-  <div id="mapa-trazabilidad" style="height: 450px; width: 80%; margin: 20px auto 40px auto; border-radius: 12px; border: 2px solid #dee2e6; box-shadow: 0 4px 16px rgba(0,0,0,0.1); z-index: 1;">
-  </div>
-  }
+  </main>
 </div>
 
 <router-outlet></router-outlet>

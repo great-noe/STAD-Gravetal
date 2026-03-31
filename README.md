@@ -430,9 +430,17 @@ El proyecto Sistema de Trazabilidad Agrícola Digital (STAD) digitaliza exitosam
 - **Repositorio de STAD (Frontend & Backend)**: https://github.com/great-noe/STAD-Gravetal
 
 ### 10.2. Capturas de Pantalla
+- *[Diagrama Entidad Relacion]*
+- <img width="526" height="513" alt="image" src="https://github.com/user-attachments/assets/b4242bfc-a568-4a0b-866e-ba4eeecef113" />
+- *[Diagram de Secuencias]*
+- <img width="803" height="635" alt="image" src="https://github.com/user-attachments/assets/8443b691-797a-4eb2-a61d-76316286d073" />
 - *[Captura del Login Integrado a Keycloak]*
+- <img width="681" height="561" alt="image" src="https://github.com/user-attachments/assets/7ebdac94-5823-4cda-a4aa-b3d91e49f6fc" />
 - *[Captura de la Tabla Responsiva de Trazabilidad de Soja]*
+- <img width="891" height="395" alt="image" src="https://github.com/user-attachments/assets/9b2e7ecf-2b1c-49a8-8bfe-bb54189590d6" />
 - *[Captura del Formulario de Registro de Lotes en PWA]*
+- <img width="746" height="603" alt="image" src="https://github.com/user-attachments/assets/97977f61-7211-4cab-af86-f4f423f7c3b3" />
+
 
 ### 10.3. Docker Compose
 El proyecto se orquesta en entornos locales y productivos mediante un manifiesto estandarizado:

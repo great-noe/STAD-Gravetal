@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using STAD.Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using STAD.Infrastructure.Data;
@@ -52,9 +53,13 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("PermitirAngular", policy =>
     {
-        policy.WithOrigins("http://localhost:4200") // El puerto de tu frontend
-              .AllowAnyHeader()
-              .AllowAnyMethod();
+        policy
+            .WithOrigins(
+                "http://localhost:4200",  // Desarrollo local (ng serve)
+                "http://localhost:4200"   // Frontend containerizado (Nginx en puerto 4200)
+            )
+            .AllowAnyHeader()
+            .AllowAnyMethod();
     });
 });
 builder.Services.AddEndpointsApiExplorer();
@@ -63,6 +68,15 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+// --- MIGRACIONES AUTOMATICAS ---
+// Aplica cualquier migracion pendiente al iniciar.
+// Esto garantiza que la BD este al dia cuando el contenedor arranque.
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    db.Database.Migrate();
+}
 
 if (app.Environment.IsDevelopment())
 {

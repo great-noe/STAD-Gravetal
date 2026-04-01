@@ -1,0 +1,19 @@
+# Dependencias instaladas localmente — se instalan en el build del contenedor
+node_modules/
+
+# Carpeta de build local
+dist/
+
+# Cache de Angular CLI
+.angular/
+
+# Archivos de IDE
+.vscode/
+*.swp
+
+# Logs
+*.log
+npm-debug.log*
+
+# Documentacion
+README.md

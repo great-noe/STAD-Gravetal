@@ -1,0 +1,136 @@
+/* variables y reseteos básicos */
+:root {
+  --primary-color: #059669; /* Verde esmeralda (agrícola/seguro) */
+  --primary-hover: #047857;
+  --bg-dark: #111827;
+  --text-light: #f3f4f6;
+  --card-bg: rgba(255, 255, 255, 0.05); /* Cristal */
+  --card-border: rgba(255, 255, 255, 0.1);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  /* Fondo impresionante de logística/hidrovía/puertos (Unsplash) */
+  background: linear-gradient(rgba(17, 24, 39, 0.8), rgba(17, 24, 39, 0.9)),
+    url('https://images.unsplash.com/photo-1578575437130-527eed3abbec?q=80&w=2070&auto=format&fit=crop') no-repeat center fixed;
+  background-size: cover;
+  color: var(--text-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+/* El contenedor principal de Keycloak */
+.login-pf body {
+  background-color: transparent;
+}
+
+#kc-header {
+  display: none; /* Ocultamos el header predeterminado para hacer uno propio dentro de la tarjeta */
+}
+
+/* Tarjeta principal (Efecto Glassmorphism) */
+#kc-content {
+  width: 100%;
+  max-width: 420px;
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  padding: 2.5rem;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* Encabezado dentro de la tarjeta */
+.custom-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.custom-header h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.025em;
+}
+
+.custom-header p {
+  color: #9ca3af;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* Campos de entrada */
+.pf-c-form-control {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #fff !important;
+  border-radius: 8px !important;
+  padding: 0.75rem 1rem !important;
+  font-size: 1rem !important;
+  transition: all 0.3s ease !important;
+}
+
+.pf-c-form-control:focus {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.25) !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Labels */
+.pf-c-form__label-text {
+  color: #e5e7eb !important;
+  font-weight: 500 !important;
+  font-size: 0.9rem !important;
+}
+
+/* Botón Principal */
+.pf-c-button.pf-m-primary {
+  width: 100%;
+  background-color: var(--primary-color) !important;
+  color: white !important;
+  border-radius: 8px !important;
+  padding: 0.75rem !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  border: none !important;
+  transition: all 0.2s ease !important;
+  margin-top: 1rem;
+}
+
+.pf-c-button.pf-m-primary:hover {
+  background-color: var(--primary-hover) !important;
+  transform: translateY(-1px);
+}
+
+/* Alertas de error */
+.pf-c-alert.pf-m-danger {
+  background-color: rgba(239, 68, 68, 0.1) !important;
+  border: 1px solid rgba(239, 68, 68, 0.2) !important;
+  color: #fca5a5 !important;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+/* Links */
+a {
+  color: #34d399 !important;
+  text-decoration: none !important;
+  transition: color 0.2s;
+}
+
+a:hover {
+  color: #10b981 !important;
+}
+
+/* Ocultar elementos innecesarios de keycloak base */
+#kc-info, .kc-logo-text {
+  display: none !important;
+}

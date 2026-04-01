@@ -446,7 +446,9 @@ El proyecto Sistema de Trazabilidad Agrícola Digital (STAD) digitaliza exitosam
 El proyecto se orquesta en entornos locales y productivos mediante un manifiesto estandarizado:
 ```yaml
 services:
+  # ─────────────────────────────────────────────────────────────────────────────
   # Base de Datos PostgreSQL 18
+  # ─────────────────────────────────────────────────────────────────────────────
   stad-postgres:
     image: postgres:18-alpine
     container_name: stad_db
@@ -459,10 +461,19 @@ services:
     volumes:
       - stad_db_data:/var/lib/postgresql/data
     restart: always
+    # Healthcheck: la API esperará a que Postgres acepte conexiones reales
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d STAD_Db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
 
-  # Servidor de Autenticación Keycloak 26.0
+# ─────────────────────────────────────────────────────────────────────────────
+  # Servidor de Autenticación Keycloak 26.5.5
+  # ─────────────────────────────────────────────────────────────────────────────
   stad-keycloak:
-    image: quay.io/keycloak/keycloak:26.0
+    image: quay.io/keycloak/keycloak:26.5.5
     container_name: stad_keycloak
     ports:
       - "8080:8080"
@@ -473,13 +484,57 @@ services:
       - KC_DB_URL=jdbc:postgresql://stad-postgres:5432/STAD_Db
       - KC_DB_USERNAME=admin
       - KC_DB_PASSWORD=12345678
-    command: start-dev
+    # 1. AÑADIMOS EL PARÁMETRO --import-realm
+    command: start-dev --import-realm
     depends_on:
-      - stad-postgres
+      stad-postgres:
+        condition: service_healthy
     volumes:
       - ./keycloak-theme:/opt/keycloak/themes
+      # 2. MAPEAMOS EL ARCHIVO JSON AL DIRECTORIO DE IMPORTACIÓN DE KEYCLOAK
+      - ./realm-export.json:/opt/keycloak/data/import/realm-export.json
+    restart: unless-stopped
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Backend .NET 10 — STAD.API
+  # El contexto de build es la RAIZ del repo porque la API referencia
+  # los proyectos STAD.Application e STAD.Infrastructure.
+  # ─────────────────────────────────────────────────────────────────────────────
+  stad-api:
+    build:
+      context: .
+      dockerfile: STAD.API/Dockerfile
+    container_name: stad_api
+    ports:
+      - "5188:5188"
+    environment:
+      # Sobreescribe appsettings.json para usar nombres de servicio Docker
+      - ConnectionStrings__DefaultConnection=Host=stad-postgres;Port=5432;Database=STAD_Db;Username=admin;Password=12345678
+      - Jwt__Authority=http://stad-keycloak:8080/realms/StadRealm
+      - Jwt__RequireHttpsMetadata=false
+      - ASPNETCORE_ENVIRONMENT=Production
+    depends_on:
+      stad-postgres:
+        condition: service_healthy
+      stad-keycloak:
+        condition: service_started
+    restart: unless-stopped
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Frontend Angular 21 — servido por Nginx Alpine
+  # ─────────────────────────────────────────────────────────────────────────────
+  stad-frontend:
+    build:
+      context: ./stad-frontend
+      dockerfile: Dockerfile
+    container_name: stad_frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - stad-api
     restart: unless-stopped
 
 volumes:
   stad_db_data:
+
 ```

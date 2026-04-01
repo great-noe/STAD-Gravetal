@@ -1,0 +1,25 @@
+# Carpetas de build local — no se necesitan en el contenedor
+**/bin/
+**/obj/
+**/.vs/
+**/.git/
+**/.github/
+
+# Archivos de usuario e IDE
+**/*.user
+**/*.suo
+**/.vscode/
+**/*.swp
+
+# Logs
+**/logs/
+**/*.log
+
+# Otros proyectos que no son necesarios para el build de la API
+stad-frontend/
+node_modules/
+keycloak-theme/
+
+# Documentacion
+README.md
+*.md

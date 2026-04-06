@@ -1,8 +1,9 @@
-import { APP_INITIALIZER, ApplicationConfig, importProvidersFrom } from '@angular/core';
+import { APP_INITIALIZER, ApplicationConfig, importProvidersFrom, isDevMode } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
+import { provideServiceWorker } from '@angular/service-worker';
 
 // Esta función se ejecuta ANTES de que Angular muestre la pantalla
 function initializeKeycloak(keycloak: KeycloakService) {
@@ -32,6 +33,9 @@ export const appConfig: ApplicationConfig = {
       useFactory: initializeKeycloak,
       multi: true,
       deps: [KeycloakService]
-    }
+    }, provideServiceWorker('ngsw-worker.js', {
+            enabled: !isDevMode(),
+            registrationStrategy: 'registerWhenStable:30000'
+          })
   ]
 };

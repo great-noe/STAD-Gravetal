@@ -66,6 +66,8 @@ services:
       - Jwt__Authority=http://stad-keycloak:8080/realms/StadRealm
       - Jwt__RequireHttpsMetadata=false
       - ASPNETCORE_ENVIRONMENT=Production
+      # Define el emisor válido esperado desde el frontend (localhost)
+      - Jwt__ValidIssuer=http://localhost:8080/realms/StadRealm
     depends_on:
       stad-postgres:
         condition: service_healthy

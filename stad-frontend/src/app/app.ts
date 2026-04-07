@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, ChangeDetectorRef, AfterViewInit, HostListener } from '@angular/core'; 
+import { Component, OnInit, ChangeDetectorRef, AfterViewInit, HostListener } from '@angular/core'; 
 import { RouterOutlet } from '@angular/router';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { LoteService } from './services/lote';
